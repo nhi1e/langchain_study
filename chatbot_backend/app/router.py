@@ -21,3 +21,4 @@ async def chat(request: ChatRequest):
         response = "Error"
 
     return ChatResponse(query_type=query_type, response=response)
+
