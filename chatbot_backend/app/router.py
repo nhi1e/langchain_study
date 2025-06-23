@@ -11,6 +11,7 @@ router = APIRouter()
 async def chat(request: ChatRequest):
     query_type = classify_query(request.query)
 
+    #need to restructure the parameter to match the function signature
     if query_type == "sql":
         response = query_support_ticket(request.user_id)
     elif query_type == "vectordb":
@@ -21,4 +22,3 @@ async def chat(request: ChatRequest):
         response = "Error"
 
     return ChatResponse(query_type=query_type, response=response)
-

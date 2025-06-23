@@ -122,3 +122,16 @@ for step in graph.stream({
     "user_id": "u005"
 },stream_mode="updates" ):
     print(step)
+#---------------------------------------------------------------------------------------------------------
+async def query_support_ticket(user_id: str, question: str):
+    """
+    Function to handle SQL queries for support tickets.
+    :param user_id: The ID of the user making the query.
+    :param question: The question related to the support ticket.
+    :return: The answer to the user's question based on the support ticket data.
+    """
+    state = {"user_id": user_id, "question": question}
+    for step in graph.stream(state, stream_mode="updates"):
+        if "answer" in step:
+            return step["answer"]
+    return "No answer found."

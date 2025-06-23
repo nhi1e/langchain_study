@@ -9,7 +9,7 @@ if "TAVILY_API_KEY" not in os.environ:
 
 client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
 
-async def search_web(query: str) -> str:
+async def search_web_with_tavily(query: str) -> str:
     result = client.search(query=query, max_results=3)
     return result["results"][0]["content"] if result["results"] else "No info found."
 
@@ -45,7 +45,12 @@ rag_chain = custom_prompt | llm | output_parser
 #---------------------------------------------------------------------------------------------------
 if __name__ == "__main__":
     query = "How do i fix my broken laptop?"
-    context = asyncio.run(search_web(query))
+    context = asyncio.run(search_web_with_tavily(query))
     response = rag_chain.invoke({"context": context, "question": query})
     print("Query:", query)
     print("Response:", response)
+#---------------------------------------------------------------------------------------------------
+async def search_web(query: str) -> str:
+    context = asyncio.run(search_web_with_tavily(query))
+    response = rag_chain.invoke({"context": context, "question": query})
+    return response
